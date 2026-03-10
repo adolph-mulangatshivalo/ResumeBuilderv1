@@ -1,0 +1,329 @@
+/* --- BASE STYLES & BUILDER UI --- */
+:root {
+    --bg-color: #f1f5f9;
+    --panel-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --ui-accent: #2563eb;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 10;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.logo h1 { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+.logo h1 span { color: var(--ui-accent); }
+.logo p { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+
+.customization-controls {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.control-group { display: flex; flex-direction: column; gap: 0.25rem; }
+.control-group label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+.control-group select {
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: #f8fafc;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+}
+.control-group select:focus { border-color: var(--ui-accent); box-shadow: 0 0 0 2px rgba(37,99,235,0.1); }
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background-color: var(--ui-accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+.download-btn:hover { background-color: #1d4ed8; transform: translateY(-1px); }
+.download-btn:active { transform: translateY(0); }
+
+/* MAIN CONTAINER & LEFT PANEL */
+.builder-container { display: flex; flex: 1; overflow: hidden; }
+.left-panel {
+    width: 380px;
+    background-color: var(--panel-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem;
+    overflow-y: auto;
+}
+.left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar { width: 6px; }
+.left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+
+.resume-form h2 { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin: 2rem 0 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+.resume-form h2:first-of-type { margin-top: 0; }
+.form-group { margin-bottom: 1.25rem; }
+.form-group label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.35rem; }
+.form-group input, .form-group textarea {
+    width: 100%; padding: 0.625rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 0.875rem;
+}
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--ui-accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.form-group textarea { resize: vertical; }
+.help-text { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; display: block; }
+
+/* RIGHT PANEL & PREVIEW */
+.right-panel {
+    flex: 1; padding: 2rem; overflow-y: auto; display: flex; justify-content: center; background-color: #cbd5e1;
+}
+.resume-preview-wrapper {
+    background-color: white; width: 8.5in; min-height: 11in; margin-bottom: 3rem;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+.resume-preview {
+    width: 100%; height: 100%; box-sizing: border-box; position: relative;
+    /* CSS variables populated by Theme */
+    --resume-primary: #2563eb;
+    --resume-text: #334155;
+    --resume-bg: #ffffff;
+    --resume-sidebar-bg: #f8fafc;
+    --resume-sidebar-text: #334155;
+    
+    /* Font variables */
+    --font-heading: 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    background-color: var(--resume-bg);
+    color: var(--resume-text);
+    font-family: var(--font-body);
+    font-size: 10pt;
+    line-height: 1.5;
+}
+
+/* Base structural classes */
+.resume-layout-grid {
+    display: grid;
+    /* Defaults, overridden by layout classes */
+    grid-template-areas: 
+        "header header"
+        "main sidebar";
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 11in;
+}
+
+.resume-header-area { grid-area: header; }
+.resume-main-area { grid-area: main; }
+.resume-sidebar-area { grid-area: sidebar; }
+
+.resume-name { font-family: var(--font-heading); font-size: 28pt; font-weight: 700; color: var(--resume-primary); line-height: 1.1; margin-bottom: 4pt; }
+.resume-title { font-family: var(--font-heading); font-size: 14pt; font-weight: 500; color: var(--resume-text); opacity: 0.8; margin-bottom: 12pt; }
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 14pt;
+    font-weight: 600;
+    color: var(--resume-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10pt;
+    margin-top: 16pt;
+    border-bottom: 2px solid var(--resume-primary);
+    padding-bottom: 4pt;
+}
+
+.resume-section:first-child .section-title { margin-top: 0; }
+.section-content { text-align: justify; }
+
+.contact-item { display: inline-flex; align-items: center; gap: 4pt; margin-right: 12pt; margin-bottom: 4pt; font-size: 9pt; }
+.contact-item:last-child { margin-right: 0; }
+.contact-item .icon { color: var(--resume-primary); font-weight: bold; }
+
+/* Textarea preview (HTML rendering) styles */
+.html-content p { margin-bottom: 4pt; }
+.html-content ul { margin-left: 16pt; margin-bottom: 8pt; }
+.html-content li { margin-bottom: 2pt; }
+.html-content strong { font-weight: 600; color: var(--resume-primary); }
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6pt;
+}
+.skills-grid span {
+    background-color: rgba(0,0,0,0.05); /* slightly tinted */
+    padding: 3pt 8pt;
+    border-radius: 4pt;
+    font-size: 9pt;
+}
+
+/* ========================================= */
+/* TEMPLATE STYLES                           */
+/* ========================================= */
+
+/* --- LAYOUTS --- */
+
+/* 1. layout-modern (2 columns, standard spacing) */
+.layout-modern .resume-layout-grid {
+    grid-template-areas: 
+        "header header"
+        "main sidebar";
+    grid-template-columns: 2fr 1fr;
+    padding: 36pt;
+    gap: 24pt;
+}
+.layout-modern .resume-header-area { padding-bottom: 16pt; border-bottom: 1px solid #cbd5e1; }
+
+/* 2. layout-classic (Centered header, Single Column structure) */
+.layout-classic .resume-layout-grid {
+    grid-template-areas: "header" "main" "sidebar";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    padding: 48pt;
+}
+.layout-classic .resume-header-area { text-align: center; border-bottom: 2px solid var(--resume-primary); margin-bottom: 24pt; padding-bottom: 16pt; }
+.layout-classic .header-contact { justify-content: center; display: flex; flex-wrap: wrap; gap: 12pt; }
+.layout-classic .contact-item { margin-right: 0; }
+.layout-classic .skills-grid span { background: none; border: 1px solid #ccc; border-radius: 0; }
+
+/* 3. layout-creative (Top Header Colored Background) */
+.layout-creative .resume-layout-grid {
+    grid-template-areas: "header" "main" "sidebar";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+}
+.layout-creative .resume-header-area { background-color: var(--resume-primary); padding: 48pt; color: #fff; }
+.layout-creative .resume-name, .layout-creative .resume-title { color: #fff; }
+.layout-creative .header-contact { color: #fff; opacity: 0.9; }
+.layout-creative .contact-item .icon { color: #fff; }
+.layout-creative .resume-main-area, .layout-creative .resume-sidebar-area { padding: 24pt 48pt; }
+.layout-creative .section-title { border-bottom: none; position: relative; display: inline-block; }
+.layout-creative .section-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 50%; height: 3px; background-color: var(--resume-primary); }
+
+/* 4. layout-sidebar-left (Full height sidebar on left) */
+.layout-sidebar-left .resume-layout-grid {
+    grid-template-areas: "sidebar main";
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr;
+    padding: 0;
+}
+.layout-sidebar-left .resume-sidebar-area { background-color: var(--resume-sidebar-bg); color: var(--resume-sidebar-text); padding: 36pt; }
+.layout-sidebar-left .resume-main-area { padding: 36pt; }
+/* Move header inside main for this layout via CSS grid order hack or absolute pos? Actually, standard grid order: */
+.layout-sidebar-left .resume-header-area { grid-column: 2; grid-row: 1; margin: 36pt 36pt 0 36pt; }
+.layout-sidebar-left .resume-main-area { grid-column: 2; grid-row: 1; margin-top: 140pt; } /* Offset for header */
+.layout-sidebar-left .resume-sidebar-area .section-title { color: var(--resume-sidebar-text); border-bottom-color: var(--resume-sidebar-text); opacity: 0.8; }
+.layout-sidebar-left .skills-grid span { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+
+/* 5. layout-sidebar-right (Full height sidebar on right) */
+.layout-sidebar-right .resume-layout-grid {
+    grid-template-areas: "main sidebar";
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr;
+}
+.layout-sidebar-right .resume-sidebar-area { background-color: var(--resume-sidebar-bg); color: var(--resume-sidebar-text); padding: 36pt; }
+.layout-sidebar-right .resume-header-area { grid-column: 1; grid-row: 1; margin: 36pt 36pt 0 36pt; }
+.layout-sidebar-right .resume-main-area { grid-column: 1; grid-row: 1; margin-top: 140pt; padding: 0 36pt 36pt 36pt; }
+.layout-sidebar-right .resume-sidebar-area .section-title { color: var(--resume-sidebar-text); border-bottom-color: var(--resume-sidebar-text); opacity: 0.8; }
+
+/* 6. layout-minimal (No borders, whitespace focused) */
+.layout-minimal .resume-layout-grid { padding: 48pt; grid-template-columns: 1fr; display: block; }
+.layout-minimal .section-title { border-bottom: none; font-size: 16pt; margin-top: 24pt; margin-bottom: 12pt; }
+.layout-minimal .resume-name { font-size: 36pt; font-weight: 300; letter-spacing: -1px; }
+.layout-minimal .resume-title { font-weight: 300; }
+.layout-minimal .header-contact { margin-bottom: 36pt; }
+.layout-minimal .skills-grid span { padding: 0; background: none; border-right: 1px solid #ccc; border-radius: 0; padding-right: 6pt; margin-right: 6pt; }
+.layout-minimal .skills-grid span:last-child { border-right: none; }
+
+/* 7. layout-elegant (Double borders, serif defaults usually but handled by var) */
+.layout-elegant .resume-layout-grid { padding: 36pt; display: block; border: 4pt double var(--resume-primary); margin: 24pt; min-height: calc(11in - 48pt); }
+.layout-elegant .resume-header-area { text-align: center; border-bottom: 1px solid var(--resume-primary); padding-bottom: 12pt; margin-bottom: 12pt; }
+.layout-elegant .section-title { text-align: center; border-bottom: none; position: relative; }
+.layout-elegant .section-title::before, .layout-elegant .section-title::after { content: ''; position: absolute; top: 50%; width: 30%; height: 1px; background: #ccc; }
+.layout-elegant .section-title::before { left: 0; } .layout-elegant .section-title::after { right: 0; }
+
+/* 8. layout-timeline (Left border timeline) */
+.layout-timeline .resume-layout-grid { padding: 48pt; display: block; }
+.layout-timeline .html-content .item { position: relative; padding-left: 24pt; border-left: 2px solid var(--resume-primary); margin-bottom: 16pt; }
+.layout-timeline .html-content .item::before { content: ''; position: absolute; left: -6px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--resume-primary); }
+
+/* 9. layout-split (50% 50%) */
+.layout-split .resume-layout-grid { grid-template-columns: 1fr 1fr; grid-template-areas: "header header" "main sidebar"; gap: 36pt; padding: 36pt; }
+
+/* 10. layout-compact (Very tight spacing to fit more text) */
+.layout-compact .resume-layout-grid { padding: 24pt; gap: 12pt; grid-template-columns: 2fr 1fr; }
+.layout-compact .section-title { margin-top: 8pt; margin-bottom: 4pt; font-size: 12pt; border-bottom-width: 1px; }
+.layout-compact .resume-name { font-size: 20pt; }
+.layout-compact .resume-title { font-size: 11pt; margin-bottom: 4pt; }
+.layout-compact .html-content p, .layout-compact .html-content ul { margin-bottom: 2pt; }
+
+
+/* --- THEMES (Colors) --- */
+.theme-default { --resume-primary: #2563eb; --resume-bg: #ffffff; --resume-text: #1e293b; --resume-sidebar-bg: #1e293b; --resume-sidebar-text: #f8fafc; }
+.theme-ocean { --resume-primary: #0891b2; --resume-bg: #f8fafc; --resume-text: #0f172a; --resume-sidebar-bg: #0f172a; --resume-sidebar-text: #e0f2fe; }
+.theme-forest { --resume-primary: #059669; --resume-bg: #fefdfa; --resume-text: #064e3b; --resume-sidebar-bg: #064e3b; --resume-sidebar-text: #ecfdf5; }
+.theme-ruby { --resume-primary: #e11d48; --resume-bg: #fff; --resume-text: #4c0519; --resume-sidebar-bg: #881337; --resume-sidebar-text: #ffe4e6; }
+.theme-midnight { --resume-primary: #6366f1; --resume-bg: #fff; --resume-text: #0f172a; --resume-sidebar-bg: #020617; --resume-sidebar-text: #f8fafc; }
+.theme-slate { --resume-primary: #475569; --resume-bg: #fff; --resume-text: #1e293b; --resume-sidebar-bg: #f1f5f9; --resume-sidebar-text: #1e293b; }
+/* Emerald, Purple, Coffee, Monochrome... */
+.theme-emerald { --resume-primary: #10b981; --resume-bg: #fff; --resume-text: #064e3b; --resume-sidebar-bg: #064e3b; --resume-sidebar-text: #ecfdf5; }
+.theme-purple { --resume-primary: #8b5cf6; --resume-bg: #fdfcff; --resume-text: #2e1065; --resume-sidebar-bg: #2e1065; --resume-sidebar-text: #f3e8ff; }
+.theme-coffee { --resume-primary: #92400e; --resume-bg: #fefce8; --resume-text: #451a03; --resume-sidebar-bg: #451a03; --resume-sidebar-text: #fefce8; }
+.theme-monochrome { --resume-primary: #000000; --resume-bg: #ffffff; --resume-text: #000000; --resume-sidebar-bg: #e5e5e5; --resume-sidebar-text: #000000; }
+
+/* --- FONTS --- */
+.font-inter { --font-heading: 'Inter', sans-serif; --font-body: 'Inter', sans-serif; }
+.font-roboto { --font-heading: 'Roboto', sans-serif; --font-body: 'Roboto', sans-serif; }
+.font-merriweather-open { --font-heading: 'Merriweather', serif; --font-body: 'Open Sans', sans-serif; }
+.font-playfair-source { --font-heading: 'Playfair Display', serif; --font-body: 'Source Sans Pro', sans-serif; }
+.font-lora-lato { --font-heading: 'Lora', serif; --font-body: 'Lato', sans-serif; }
+.font-montserrat { --font-heading: 'Montserrat', sans-serif; --font-body: 'Montserrat', sans-serif; }
+.font-oswald-lato { --font-heading: 'Oswald', sans-serif; --font-body: 'Lato', sans-serif; }
+
+
+/* --- RESPONSIVE / MOBILE UI --- */
+@media (max-width: 1024px) {
+    .builder-container { flex-direction: column; overflow: visible; }
+    .left-panel { width: 100%; max-height: 50vh; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .right-panel { overflow: visible; padding: 1rem; }
+    .resume-preview-wrapper { width: 100%; height: auto; margin: 0 auto; transform: scale(0.9); transform-origin: top center; }
+}
+
+@media (max-width: 640px) {
+    .top-bar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .customization-controls { width: 100%; justify-content: space-between; gap: 0.5rem; }
+    .control-group { width: 48%; }
+    .control-group select { width: 100%; }
+    #download-btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+    .resume-preview-wrapper { transform: scale(0.6); margin-bottom: -40%; }
+}
